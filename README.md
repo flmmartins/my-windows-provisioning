@@ -2,10 +2,25 @@
 
 If you follow this readme you will be able to create a Windows VM from scratch from simple command lines.
 
-If you choose:
-wn7x64-pro.json it will install a trial Windows 7 Pro version from Microsoft.
-else:
-win7x64-pro-local-iso.json has my local path to my personal ISO image
+This repo began with joefitzgerald templates (https://github.com/joefitzgerald/packer-windows) and box-cutter (https://github.com/box-cutter/windows-vm)
+
+### Requirements
+
+[Packer](https://github.com/mitchellh/packer/blob/master/CHANGELOG.md) `0.5.1` or greater is required.
+
+[VirtualBox](https://www.virtualbox.org/wiki/Downloads) `4.3.12` or greater is required
+
+[Vagrant](http://www.vagrantup.com/downloads.html) `1.6.3` or greater is required
+
+### Version Status
+
+* Machines supported: Windows 7 Pro x64.
+* Platform: VirtualBox
+
+### Information about Microsoft installer
+
+`win7x64-pro.json` will install a trial Windows 7 Pro version from Microsoft. Build time: depends on Microsoft download rate
+`win7x64-pro-local-iso.json` will install my licensed Windows using my ISO's local path.
 
 If you have you own ISO you can, instead changing win7x64-pro-local-iso.json, simply run:
 
@@ -13,11 +28,13 @@ If you have you own ISO you can, instead changing win7x64-pro-local-iso.json, si
 packer build -var 'iso=<path_to_your_iso>' -var 'checksum=<checksum-value>' windows7_virtuabox.json
 ```
 
-If you have the ISO it will take about 20 minutes
+### Product Keys 
 
-[Packer](https://github.com/mitchellh/packer/blob/master/CHANGELOG.md) `0.5.1` or greater is required.
-[VirtualBox](https://www.virtualbox.org/wiki/Downloads) `4.3.12` or greater is required
-[Vagrant](http://www.vagrantup.com/downloads.html) `1.6.3` or greater is required
+If you wanna add your own product keys to Windows:
+
+* Uncomment the `<Key>...</Key>` element
+* Insert your product key into the `Key` element
+
 
 ### Building a VM with packer
 
@@ -41,4 +58,4 @@ vagrant ssh
 
 And your are done!
 
-PS: You can also RDP to this Windows by using $vagrant rdp.
+PS: You can also RDP to this Windows by using `vagrant rdp`.
