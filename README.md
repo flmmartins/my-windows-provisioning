@@ -20,17 +20,18 @@ This repo began with joefitzgerald templates (https://github.com/joefitzgerald/p
 ### Information about Microsoft installer
 
 `win7x64-pro.json` will install a trial Windows 7 Pro version from Microsoft. Build time: depends on Microsoft download rate
+
 `win7x64-pro-local-iso.json` will install my licensed Windows using my ISO's local path.
 
 If you have you own ISO you can, instead changing win7x64-pro-local-iso.json, simply run:
 
 ```bash
-packer build -var 'iso=<path_to_your_iso>' -var 'checksum=<checksum-value>' windows7_virtuabox.json
+packer build -var 'iso=<path_to_your_iso>' -var 'checksum=<checksum-value>' win7x64-pro.json
 ```
 
 ### Product Keys 
 
-If you wanna add your own product keys to Windows:
+In `Autounattend.xml`, if you wanna add your own product keys to Windows:
 
 * Uncomment the `<Key>...</Key>` element
 * Insert your product key into the `Key` element
@@ -41,8 +42,7 @@ If you wanna add your own product keys to Windows:
 ```bash
 packer windows7_virtuabox.json
 ```
-
-After you run this command it will create a .box file inside folder. If you want, later you can delete it but I suggest you keep it. It will be useful if you want to build a Windows for another project
+After you run this command it will create a .box file inside folder.
 
 Run Vagrant:
 
