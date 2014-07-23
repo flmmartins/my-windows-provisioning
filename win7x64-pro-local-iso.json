@@ -1,0 +1,52 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "iso_url": "/Users/fmartins/Google Drive/ISOS/Windows_7_Professional_x64.iso",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "977f4f0f1400be91855789213e07b031",
+      "headless": false,
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "4h",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "guest_os_type": "Windows7_64",
+      "disk_size": 61440,
+      "floppy_files": [
+        "./build_machine/Autounattend.xml",
+        "./build_machine/dis-updates.ps1",
+        "./build_machine/win-updates.ps1",
+        "./build_machine/openssh.ps1",
+        "./build_machine/oracle-cert.cer"
+      ],
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
+        [ "modifyvm","{{.Name}}", "--cpus", "2"]
+        ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "remote_path": "/tmp/script.bat",
+      "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
+      "scripts": [
+        "./build_machine/vagrant-ssh.bat",
+        "./build_machine/vm-guest-tools.bat"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "rm -rf /tmp/*"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": false,
+      "output": "windows7x64-pro.box"
+    }
+  ]
+}

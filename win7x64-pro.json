@@ -1,0 +1,57 @@
+{
+  "variables": {
+    "iso": "http://care.dlservice.microsoft.com/dl/download/evalx/win7/x64/EN/7600.16385.090713-1255_x64fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENXEVAL_EN_DVD.iso",
+    "checksum":"1d0d239a252cb53e466d39e752b17c28"
+  },
+
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "iso_url": "{{user `iso`}}",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "{{user `checksum`}}",
+      "headless": false,
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "4h",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "guest_os_type": "Windows7_64",
+      "disk_size": 61440,
+      "floppy_files": [
+        "./build_machine/Autounattend.xml",
+        "./build_machine/dis-updates.ps1",
+        "./build_machine/win-updates.ps1",
+        "./build_machine/openssh.ps1",
+        "./build_machine/oracle-cert.cer"
+      ],
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
+        [ "modifyvm","{{.Name}}", "--cpus", "2"]
+        ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "remote_path": "/tmp/script.bat",
+      "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
+      "scripts": [
+        "./build_machine/vagrant-ssh.bat",
+        "./build_machine/vm-guest-tools.bat"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "rm -rf /tmp/*"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": false,
+      "output": "windows7x64-pro.box"
+    }
+  ]
+}
