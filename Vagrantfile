@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
     config.vm.network :forwarded_port, guest: 3389, host: 3389, id: "rdp", auto_correct: true
     config.vm.hostname = "my-windows"
     config.vm.provider :virtualbox do |v, override|
-      #v.gui = true
+      v.gui = true
       v.name = "my-windows"
       v.customize ["modifyvm", :id, "--memory", 2048]
       v.customize ["modifyvm", :id, "--cpus", 2]
