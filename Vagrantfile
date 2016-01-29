@@ -24,5 +24,6 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--memory", 2048]
       v.customize ["modifyvm", :id, "--cpus", 2]
       v.customize ["setextradata", "global", "GUI/SuppressMessages", "all" ]
+      v.customize ["modifyvm", :id, '--audio', 'dsound', '--audiocontroller', 'ac97']
     end
 end
